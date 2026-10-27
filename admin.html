@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<title>HospiTrax | Admin Dashboard</title>
+
+<style>
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    body {
+        background: #f4f7fc;
+        color: #172033;
+    }
+
+    /* SIDEBAR */
+
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 245px;
+        height: 100vh;
+        background: linear-gradient(180deg, #071b35, #0d3b73);
+        color: white;
+        padding: 25px 18px;
+        z-index: 10;
+    }
+
+    .logo {
+        font-size: 27px;
+        font-weight: 800;
+        padding: 0 12px;
+        margin-bottom: 5px;
+    }
+
+    .logo span {
+        color: #60a5fa;
+    }
+
+    .hospital-text {
+        font-size: 12px;
+        color: #b9d7f7;
+        padding: 0 12px;
+        margin-bottom: 35px;
+    }
+
+    .nav-title {
+        font-size: 11px;
+        text-transform: uppercase;
+        color: #8fb7df;
+        padding: 0 12px;
+        margin-bottom: 10px;
+        letter-spacing: 1px;
+    }
+
+    .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        color: #dcecff;
+        padding: 13px 14px;
+        border-radius: 10px;
+        margin-bottom: 6px;
+        font-size: 14px;
+        transition: 0.25s;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+        background: rgba(255,255,255,0.13);
+        color: white;
+        transform: translateX(3px);
+    }
+
+    .nav-icon {
+        width: 22px;
+        text-align: center;
+        font-size: 17px;
+    }
+
+    .sidebar-bottom {
+        position: absolute;
+        bottom: 25px;
+        left: 18px;
+        right: 18px;
+    }
+
+    .logout {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: #fecaca;
+        background: rgba(220,38,38,0.16);
+        padding: 12px 14px;
+        border-radius: 10px;
+        font-size: 14px;
+    }
+
+    .logout:hover {
+        background: rgba(220,38,38,0.3);
+    }
+
+    /* MAIN */
+
+    .main {
+        margin-left: 245px;
+        min-height: 100vh;
+    }
+
+    /* TOP BAR */
+
+    .topbar {
+        height: 75px;
+        background: white;
+        border-bottom: 1px solid #e5eaf2;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 35px;
+    }
+
+    .page-title {
+        font-size: 21px;
+        font-weight: 700;
+        color: #172033;
+    }
+
+    .page-subtitle {
+        font-size: 12px;
+        color: #7b8799;
+        margin-top: 3px;
+    }
+
+    .admin-profile {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .profile-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: #e8f1ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #2563eb;
+        font-size: 19px;
+    }
+
+    .profile-name {
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .profile-role {
+        font-size: 11px;
+        color: #7b8799;
+    }
+
+    /* CONTENT */
+
+    .content {
+        padding: 30px 35px;
+    }
+
+    .welcome-box {
+        margin-bottom: 25px;
+    }
+
+    .welcome-box h1 {
+        font-size: 28px;
+        margin-bottom: 7px;
+    }
+
+    .welcome-box p {
+        color: #718096;
+        font-size: 14px;
+    }
+
+    /* STAT CARDS */
+
+    .stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+        margin-bottom: 30px;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 16px;
+        padding: 22px;
+        border: 1px solid #e7edf5;
+        box-shadow: 0 5px 18px rgba(30,60,90,0.06);
+        transition: 0.25s;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(30,60,90,0.10);
+    }
+
+    .stat-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .stat-icon {
+        width: 43px;
+        height: 43px;
+        border-radius: 12px;
+        background: #edf5ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+    }
+
+    .stat-label {
+        color: #69778c;
+        font-size: 13px;
+        margin-top: 15px;
+    }
+
+    .stat-number {
+        font-size: 30px;
+        font-weight: 750;
+        color: #1769d1;
+        margin-top: 4px;
+    }
+
+    /* FUNCTIONS */
+
+    .section {
+        background: white;
+        border-radius: 18px;
+        padding: 27px;
+        border: 1px solid #e7edf5;
+        box-shadow: 0 5px 18px rgba(30,60,90,0.05);
+    }
+
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 22px;
+    }
+
+    .section-header h2 {
+        font-size: 20px;
+    }
+
+    .section-header p {
+        font-size: 12px;
+        color: #8290a4;
+        margin-top: 4px;
+    }
+
+    .functions {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+    }
+
+    .function {
+        text-decoration: none;
+        color: #1d4ed8;
+        background: #f4f8ff;
+        border: 1px solid #e1ebfb;
+        border-radius: 14px;
+        padding: 19px;
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        transition: 0.25s;
+    }
+
+    .function:hover {
+        background: #eaf2ff;
+        border-color: #9fc3f8;
+        transform: translateY(-3px);
+        box-shadow: 0 7px 18px rgba(37,99,235,0.10);
+    }
+
+    .function-icon {
+        width: 42px;
+        height: 42px;
+        background: white;
+        border-radius: 11px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+    }
+
+    .function-text {
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .function-small {
+        font-size: 11px;
+        color: #8090a6;
+        margin-top: 3px;
+    }
+
+    /* STATUS */
+
+    .status-box {
+        margin-top: 22px;
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        border-radius: 13px;
+        padding: 15px 18px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .status-dot {
+        width: 11px;
+        height: 11px;
+        background: #22c55e;
+        border-radius: 50%;
+        box-shadow: 0 0 0 5px #dcfce7;
+    }
+
+    .status-text strong {
+        font-size: 13px;
+        color: #166534;
+    }
+
+    .status-text p {
+        font-size: 11px;
+        color: #4b7b5c;
+        margin-top: 2px;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 1100px) {
+
+        .stats {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .functions {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 750px) {
+
+        .sidebar {
+            position: relative;
+            width: 100%;
+            height: auto;
+        }
+
+        .sidebar-bottom {
+            position: relative;
+            left: auto;
+            right: auto;
+            bottom: auto;
+            margin-top: 25px;
+        }
+
+        .main {
+            margin-left: 0;
+        }
+
+        .topbar {
+            padding: 0 20px;
+        }
+
+        .content {
+            padding: 25px 20px;
+        }
+
+        .stats,
+        .functions {
+            grid-template-columns: 1fr;
+        }
+    }
+
+</style>
+```
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+```
+<div class="logo">
+    Hospi<span>Trax</span>
+</div>
+
+<div class="hospital-text">
+    Smart Hospital Management System
+</div>
+
+
+<div class="nav-title">
+    Main Menu
+</div>
+
+
+<a href="{{ url_for('dashboard') }}" class="nav-link active">
+    <span class="nav-icon">🏠</span>
+    Dashboard
+</a>
+
+
+<a href="{{ url_for('admin_patients') }}" class="nav-link">
+    <span class="nav-icon">👤</span>
+    Patients
+</a>
+
+
+<a href="{{ url_for('admin_doctors') }}" class="nav-link">
+    <span class="nav-icon">👨‍⚕️</span>
+    Doctors
+</a>
+
+
+<a href="{{ url_for('admin_hospitals') }}" class="nav-link">
+    <span class="nav-icon">🏥</span>
+    Hospitals
+</a>
+
+
+<a href="{{ url_for('admin_beds') }}" class="nav-link">
+    <span class="nav-icon">🛏️</span>
+    Bed Management
+</a>
+
+
+<div class="nav-title" style="margin-top:25px;">
+    System
+</div>
+
+
+<a href="#" class="nav-link">
+    <span class="nav-icon">📋</span>
+    Medical Records
+</a>
+
+
+<a href="#" class="nav-link">
+    <span class="nav-icon">📊</span>
+    Reports
+</a>
+
+
+<div class="sidebar-bottom">
+
+    <a href="{{ url_for('logout') }}" class="logout">
+        <span>🚪</span>
+        Logout
+    </a>
+
+</div>
+```
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+```
+<!-- TOP BAR -->
+
+<div class="topbar">
+
+    <div>
+        <div class="page-title">
+            Admin Dashboard
+        </div>
+
+        <div class="page-subtitle">
+            Hospital administration & system overview
+        </div>
+    </div>
+
+
+    <div class="admin-profile">
+
+        <div class="profile-icon">
+            🛡️
+        </div>
+
+        <div>
+
+            <div class="profile-name">
+                {{ username }}
+            </div>
+
+            <div class="profile-role">
+                Administrator
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- CONTENT -->
+
+<div class="content">
+
+
+    <!-- WELCOME -->
+
+    <div class="welcome-box">
+
+        <h1>
+            Good to see you, {{ username }} 👋
+        </h1>
+
+        <p>
+            Monitor and manage your HospiTrax hospital system from here.
+        </p>
+
+    </div>
+
+
+    <!-- STATISTICS -->
+
+    <div class="stats">
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon">
+                    👤
+                </div>
+
+            </div>
+
+            <div class="stat-label">
+                Total Patients
+            </div>
+
+            <div class="stat-number">
+                {{ total_patients }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon">
+                    👨‍⚕️
+                </div>
+
+            </div>
+
+            <div class="stat-label">
+                Total Doctors
+            </div>
+
+            <div class="stat-number">
+                {{ total_doctors }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon">
+                    🏥
+                </div>
+
+            </div>
+
+            <div class="stat-label">
+                Hospitals
+            </div>
+
+            <div class="stat-number">
+                {{ total_hospitals }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon">
+                    🛏️
+                </div>
+
+            </div>
+
+            <div class="stat-label">
+                Available Beds
+            </div>
+
+            <div class="stat-number">
+                {{ available_beds }}
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ADMIN FUNCTIONS -->
+
+    <div class="section">
+
+
+        <div class="section-header">
+
+            <div>
+
+                <h2>
+                    Admin Functions
+                </h2>
+
+                <p>
+                    Access and manage hospital modules
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="functions">
+
+
+            <a
+                href="{{ url_for('admin_patients') }}"
+                class="function"
+            >
+
+                <div class="function-icon">
+                    👤
+                </div>
+
+                <div>
+
+                    <div class="function-text">
+                        Patient Management
+                    </div>
+
+                    <div class="function-small">
+                        View patient records
+                    </div>
+
+                </div>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('admin_doctors') }}"
+                class="function"
+            >
+
+                <div class="function-icon">
+                    👨‍⚕️
+                </div>
+
+                <div>
+
+                    <div class="function-text">
+                        Doctor Management
+                    </div>
+
+                    <div class="function-small">
+                        Manage doctors
+                    </div>
+
+                </div>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('admin_hospitals') }}"
+                class="function"
+            >
+
+                <div class="function-icon">
+                    🏥
+                </div>
+
+                <div>
+
+                    <div class="function-text">
+                        Hospital Management
+                    </div>
+
+                    <div class="function-small">
+                        Manage hospitals
+                    </div>
+
+                </div>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('admin_beds') }}"
+                class="function"
+            >
+
+                <div class="function-icon">
+                    🛏️
+                </div>
+
+                <div>
+
+                    <div class="function-text">
+                        Bed Management
+                    </div>
+
+                    <div class="function-small">
+                        Track bed availability
+                    </div>
+
+                </div>
+
+            </a>
+
+
+            <a
+                href="#"
+                class="function"
+            >
+
+                <div class="function-icon">
+                    📋
+                </div>
+
+                <div>
+
+                    <div class="function-text">
+                        Medical Records
+                    </div>
+
+                    <div class="function-small">
+                        Coming next
+                    </div>
+
+                </div>
+
+            </a>
+
+
+            <a
+                href="#"
+                class="function"
+            >
+
+                <div class="function-icon">
+                    📊
+                </div>
+
+                <div>
+
+                    <div class="function-text">
+                        Reports
+                    </div>
+
+                    <div class="function-small">
+                        Coming next
+                    </div>
+
+                </div>
+
+            </a>
+
+
+        </div>
+
+
+        <!-- SYSTEM STATUS -->
+
+        <div class="status-box">
+
+            <div class="status-dot"></div>
+
+            <div class="status-text">
+
+                <strong>
+                    HospiTrax System Active
+                </strong>
+
+                <p>
+                    Database and authentication services are running normally.
+                </p>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+```
+
+</div>
+
+</body>
+</html>

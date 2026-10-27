@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HospiTrax | Patient Record System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(135deg, #e8f4ff, #f4fbff, #e8f8f5);
+            min-height: 100vh;
+            color: #1f2937;
+        }
+
+        /* HEADER */
+
+        .header {
+            background: linear-gradient(135deg, #075985, #087f8c, #0f9d8a);
+            color: white;
+            padding: 28px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 20px rgba(0, 70, 100, 0.25);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo-box {
+            width: 48px;
+            height: 48px;
+            background: rgba(255,255,255,0.18);
+            border: 1px solid rgba(255,255,255,0.35);
+            border-radius: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .logo h1 {
+            font-size: 27px;
+            letter-spacing: 0.5px;
+        }
+
+        .logo p {
+            font-size: 13px;
+            opacity: 0.85;
+            margin-top: 3px;
+        }
+
+        .system-status {
+            background: rgba(255,255,255,0.15);
+            padding: 10px 18px;
+            border-radius: 30px;
+            font-size: 13px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* MAIN */
+
+        .main {
+            width: 90%;
+            max-width: 1150px;
+            margin: 35px auto 60px;
+        }
+
+        .welcome {
+            margin-bottom: 28px;
+        }
+
+        .welcome h2 {
+            font-size: 30px;
+            color: #164e63;
+        }
+
+        .welcome p {
+            color: #64748b;
+            margin-top: 7px;
+        }
+
+        /* GRID */
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        /* CARD */
+
+        .card {
+            background: rgba(255,255,255,0.92);
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 10px 30px rgba(15, 80, 100, 0.10);
+            border: 1px solid rgba(150, 200, 215, 0.35);
+            backdrop-filter: blur(10px);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 24px;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 19px;
+        }
+
+        .register-icon {
+            background: #dff5ff;
+            color: #087ea4;
+        }
+
+        .search-icon {
+            background: #dcf8ef;
+            color: #07856f;
+        }
+
+        .card-header h3 {
+            color: #164e63;
+            font-size: 20px;
+        }
+
+        .card-header p {
+            color: #78909c;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        /* FORM */
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #d4e2e8;
+            border-radius: 10px;
+            background: #fafdff;
+            color: #263238;
+            font-size: 14px;
+            outline: none;
+            transition: 0.25s;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #0891b2;
+            box-shadow: 0 0 0 3px rgba(8,145,178,0.10);
+            background: white;
+        }
+
+        /* BUTTON */
+
+        button {
+            width: 100%;
+            border: none;
+            padding: 13px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: 0.25s;
+            margin-top: 8px;
+        }
+
+        .register-button {
+            background: linear-gradient(135deg, #087ea4, #0891b2);
+            box-shadow: 0 6px 15px rgba(8,126,164,0.20);
+        }
+
+        .search-button {
+            background: linear-gradient(135deg, #07856f, #0d9f83);
+            box-shadow: 0 6px 15px rgba(7,133,111,0.20);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 9px 20px rgba(0,0,0,0.15);
+        }
+
+        /* SUCCESS */
+
+        .success {
+            margin-top: 22px;
+            padding: 20px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #e8fff6, #f3fffb);
+            border: 1px solid #a7e8d2;
+            text-align: center;
+        }
+
+        .success-title {
+            color: #08785f;
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .upid-label {
+            color: #64748b;
+            font-size: 12px;
+            margin-top: 15px;
+        }
+
+        .upid {
+            display: inline-block;
+            margin-top: 7px;
+            padding: 9px 20px;
+            border-radius: 9px;
+            background: #ffffff;
+            color: #087ea4;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            border: 1px solid #b7dfe9;
+        }
+
+        /* ERROR */
+
+        .error {
+            margin-top: 18px;
+            padding: 14px;
+            background: #fff1f2;
+            color: #be123c;
+            border: 1px solid #fecdd3;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        /* PATIENT RECORD */
+
+        .full-card {
+            margin-top: 25px;
+        }
+
+        .patient-banner {
+            background: linear-gradient(135deg, #075985, #087f8c);
+            color: white;
+            border-radius: 15px;
+            padding: 23px;
+            margin-bottom: 22px;
+        }
+
+        .patient-banner small {
+            opacity: 0.8;
+        }
+
+        .patient-banner h2 {
+            margin-top: 5px;
+            font-size: 25px;
+        }
+
+        .patient-banner .patient-upid {
+            margin-top: 8px;
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .detail-box {
+            background: #f5fafc;
+            border: 1px solid #e1edf1;
+            padding: 15px;
+            border-radius: 11px;
+        }
+
+        .detail-box span {
+            display: block;
+            color: #78909c;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .detail-box strong {
+            color: #164e63;
+            font-size: 14px;
+        }
+
+        /* MEDICAL HISTORY */
+
+        .section-title {
+            color: #164e63;
+            margin: 28px 0 15px;
+            font-size: 19px;
+        }
+
+        .record {
+            position: relative;
+            background: #f8fcfd;
+            border-left: 4px solid #0d9488;
+            padding: 18px 20px;
+            margin-bottom: 13px;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .record-hospital {
+            color: #087ea4;
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+
+        .record p {
+            margin: 6px 0;
+            font-size: 13px;
+            color: #475569;
+        }
+
+        .record strong {
+            color: #334155;
+        }
+
+        .no-records {
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 10px;
+            color: #64748b;
+            text-align: center;
+        }
+
+        /* SYNC STATUS */
+
+        .sync-status {
+            margin-top: 22px;
+            padding: 16px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #e8fff7, #effdfa);
+            border: 1px solid #b7eadb;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sync-dot {
+            width: 12px;
+            height: 12px;
+            background: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 0 5px rgba(16,185,129,0.12);
+        }
+
+        .sync-status strong {
+            color: #08785f;
+        }
+
+        .sync-status p {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 3px;
+        }
+
+        /* FOOTER */
+
+        footer {
+            text-align: center;
+            color: #78909c;
+            font-size: 12px;
+            padding: 20px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 850px) {
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                padding: 22px 5%;
+            }
+
+            .system-status {
+                display: none;
+            }
+
+            .main {
+                width: 94%;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome h2 {
+                font-size: 24px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="logo">
+
+        <div class="logo-box">
+            H
+        </div>
+
+        <div>
+            <h1>HospiTrax</h1>
+            <p>Intelligent Hospital Management & Patient Records</p>
+        </div>
+
+    </div>
+
+    <div class="system-status">
+        System Prototype • Active
+    </div>
+
+</header>
+
+
+<main class="main">
+
+    <div class="welcome">
+
+        <h2>Patient Record Management</h2>
+
+        <p>
+            Register patients, generate UPIDs and retrieve medical records across hospitals.
+        </p>
+
+    </div>
+
+
+    <div class="grid">
+
+        <!-- REGISTRATION -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div class="card-icon register-icon">
+                    01
+                </div>
+
+                <div>
+                    <h3>Patient Registration</h3>
+                    <p>Create a unique patient identity</p>
+                </div>
+
+            </div>
+
+            <form action="/register" method="POST">
+
+                <div class="form-group">
+
+                    <label>Hospital</label>
+
+                    <select name="hospital" required>
+
+                        <option value="">Select Hospital</option>
+
+                        <option value="Hospital A">
+                            Hospital A
+                        </option>
+
+                        <option value="Hospital B">
+                            Hospital B
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Patient Name</label>
+
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Enter patient name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Age</label>
+
+                    <input
+                        type="number"
+                        name="age"
+                        placeholder="Enter age"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Gender</label>
+
+                    <select name="gender" required>
+
+                        <option value="">
+                            Select Gender
+                        </option>
+
+                        <option value="Male">
+                            Male
+                        </option>
+
+                        <option value="Female">
+                            Female
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Blood Group</label>
+
+                    <select name="blood_group" required>
+
+                        <option value="">
+                            Select Blood Group
+                        </option>
+
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Phone Number</label>
+
+                    <input
+                        type="text"
+                        name="phone"
+                        placeholder="Enter phone number"
+                        required
+                    >
+
+                </div>
+
+
+                <button class="register-button" type="submit">
+                    REGISTER PATIENT
+                </button>
+
+            </form>
+
+
+            {% if success %}
+
+            <div class="success">
+
+                <div class="success-title">
+                    Patient Registered Successfully
+                </div>
+
+                <p>
+                    Patient: <strong>{{ name }}</strong>
+                </p>
+
+                <p>
+                    Registered at: <strong>{{ hospital }}</strong>
+                </p>
+
+                <div class="upid-label">
+                    UNIQUE PATIENT ID
+                </div>
+
+                <div class="upid">
+                    {{ upid }}
+                </div>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- SEARCH -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div class="card-icon search-icon">
+                    02
+                </div>
+
+                <div>
+                    <h3>Retrieve Patient</h3>
+                    <p>Access records using the UPID</p>
+                </div>
+
+            </div>
+
+
+            <p style="color:#64748b; font-size:14px; line-height:1.6; margin-bottom:20px;">
+
+                A hospital can retrieve an existing patient record by entering
+                the patient's Unique Patient ID.
+
+            </p>
+
+
+            <form action="/search" method="POST">
+
+                <div class="form-group">
+
+                    <label>Unique Patient ID</label>
+
+                    <input
+                        type="text"
+                        name="upid"
+                        placeholder="Example: HOS-1F111819"
+                        required
+                    >
+
+                </div>
+
+
+                <button class="search-button" type="submit">
+                    SEARCH PATIENT RECORD
+                </button>
+
+            </form>
+
+
+            {% if search_error %}
+
+            <div class="error">
+
+                Patient with UPID
+                <strong>{{ searched_upid }}</strong>
+                was not found.
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- PATIENT RECORD -->
+
+    {% if search_success %}
+
+    <div class="card full-card">
+
+        <div class="patient-banner">
+
+            <small>PATIENT RECORD</small>
+
+            <h2>
+                {{ patient["name"] }}
+            </h2>
+
+            <div class="patient-upid">
+                UPID: {{ patient["upid"] }}
+            </div>
+
+        </div>
+
+
+        <div class="details-grid">
+
+            <div class="detail-box">
+
+                <span>Age</span>
+
+                <strong>
+                    {{ patient["age"] }}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-box">
+
+                <span>Gender</span>
+
+                <strong>
+                    {{ patient["gender"] }}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-box">
+
+                <span>Blood Group</span>
+
+                <strong>
+                    {{ patient["blood_group"] }}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-box">
+
+                <span>Phone</span>
+
+                <strong>
+                    {{ patient["phone"] }}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-box">
+
+                <span>Registered Hospital</span>
+
+                <strong>
+                    {{ patient["hospital"] }}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-box">
+
+                <span>Patient ID</span>
+
+                <strong>
+                    {{ patient["upid"] }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="sync-status">
+
+            <div class="sync-dot"></div>
+
+            <div>
+
+                <strong>Patient Record Available</strong>
+
+                <p>
+                    Record successfully retrieved using the patient's UPID.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <h3 class="section-title">
+            Medical History
+        </h3>
+
+
+        {% if records %}
+
+            {% for record in records %}
+
+            <div class="record">
+
+                <div class="record-hospital">
+                    {{ record["hospital"] }}
+                </div>
+
+                <p>
+                    <strong>Diagnosis:</strong>
+                    {{ record["diagnosis"] }}
+                </p>
+
+                <p>
+                    <strong>Treatment:</strong>
+                    {{ record["treatment"] }}
+                </p>
+
+                <p>
+                    <strong>Date:</strong>
+                    {{ record["date"] }}
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="no-records">
+                No medical records available yet.
+            </div>
+
+        {% endif %}
+
+
+        <h3 class="section-title">
+            Add New Medical Record
+        </h3>
+
+
+        <form action="/add_record" method="POST">
+
+            <input
+                type="hidden"
+                name="upid"
+                value="{{ patient['upid'] }}"
+            >
+
+
+            <div class="grid">
+
+                <div class="form-group">
+
+                    <label>Hospital</label>
+
+                    <select name="hospital" required>
+
+                        <option value="">
+                            Select Hospital
+                        </option>
+
+                        <option value="Hospital A">
+                            Hospital A
+                        </option>
+
+                        <option value="Hospital B">
+                            Hospital B
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Diagnosis</label>
+
+                    <input
+                        type="text"
+                        name="diagnosis"
+                        placeholder="Enter diagnosis"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Treatment</label>
+
+                <input
+                    type="text"
+                    name="treatment"
+                    placeholder="Enter treatment"
+                    required
+                >
+
+            </div>
+
+
+            <button class="register-button" type="submit">
+                ADD MEDICAL RECORD
+            </button>
+
+        </form>
+
+
+        {% if record_added %}
+
+        <div class="success">
+
+            <div class="success-title">
+                Medical Record Added Successfully
+            </div>
+
+            <p>
+                The new record has been associated with
+                <strong>{{ patient["upid"] }}</strong>.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+    {% endif %}
+
+</main>
+
+
+<footer>
+
+    HospiTrax Prototype • UPID-Based Patient Record Management
+
+</footer>
+
+</body>
+</html>

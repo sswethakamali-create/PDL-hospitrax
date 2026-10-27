@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<title>HospiTrax | Secure Login</title>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    body {
+        min-height: 100vh;
+        background:
+            radial-gradient(circle at 15% 20%, rgba(96,165,250,0.25), transparent 30%),
+            radial-gradient(circle at 85% 80%, rgba(34,211,238,0.18), transparent 30%),
+            linear-gradient(135deg, #071426, #0f2f67, #1769aa);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 25px;
+    }
+
+    .login-container {
+        width: 100%;
+        max-width: 1100px;
+        min-height: 650px;
+        display: flex;
+        overflow: hidden;
+        border-radius: 28px;
+        background: rgba(255,255,255,0.97);
+        box-shadow: 0 30px 80px rgba(0,0,0,0.35);
+    }
+
+    /* LEFT SIDE */
+
+    .left-panel {
+        width: 48%;
+        padding: 55px;
+        color: white;
+        background:
+            linear-gradient(145deg, rgba(7,20,38,0.97), rgba(20,78,140,0.95));
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .left-panel::before {
+        content: "";
+        position: absolute;
+        width: 280px;
+        height: 280px;
+        border-radius: 50%;
+        background: rgba(96,165,250,0.12);
+        top: -100px;
+        right: -80px;
+    }
+
+    .left-panel::after {
+        content: "";
+        position: absolute;
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        background: rgba(34,211,238,0.08);
+        bottom: -90px;
+        left: -70px;
+    }
+
+    .brand {
+        position: relative;
+        z-index: 1;
+        margin-bottom: 35px;
+    }
+
+    .logo {
+        font-size: 44px;
+        font-weight: 800;
+        letter-spacing: -1px;
+    }
+
+    .logo span {
+        color: #60a5fa;
+    }
+
+    .brand-line {
+        width: 55px;
+        height: 4px;
+        background: #38bdf8;
+        border-radius: 10px;
+        margin-top: 10px;
+    }
+
+    .tagline {
+        position: relative;
+        z-index: 1;
+        font-size: 21px;
+        line-height: 1.55;
+        color: #dbeafe;
+        max-width: 390px;
+        margin-bottom: 38px;
+    }
+
+    .features {
+        position: relative;
+        z-index: 1;
+    }
+
+    .feature {
+        display: flex;
+        align-items: center;
+        margin: 17px 0;
+    }
+
+    .feature-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.15);
+        font-size: 20px;
+    }
+
+    .feature-text {
+        font-size: 15px;
+        color: #f1f5f9;
+    }
+
+    /* RIGHT SIDE */
+
+    .right-panel {
+        width: 52%;
+        padding: 55px 60px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .welcome {
+        font-size: 34px;
+        font-weight: 750;
+        color: #0f172a;
+        margin-bottom: 8px;
+    }
+
+    .subtitle {
+        color: #64748b;
+        font-size: 15px;
+        margin-bottom: 30px;
+    }
+
+    /* ERROR */
+
+    .error {
+        background: #fff1f2;
+        color: #be123c;
+        border: 1px solid #fecdd3;
+        padding: 12px 15px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
+
+    /* ROLE */
+
+    .role-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: #334155;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .roles {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-bottom: 25px;
+    }
+
+    .role {
+        padding: 14px 6px;
+        border: 1.5px solid #dbe3ef;
+        border-radius: 14px;
+        background: #fff;
+        text-align: center;
+        cursor: pointer;
+        color: #475569;
+        font-size: 13px;
+        transition: all 0.25s ease;
+    }
+
+    .role:hover {
+        border-color: #3b82f6;
+        transform: translateY(-2px);
+        box-shadow: 0 7px 18px rgba(37,99,235,0.10);
+    }
+
+    .role.active {
+        border-color: #2563eb;
+        background: linear-gradient(135deg, #eff6ff, #dbeafe);
+        color: #1d4ed8;
+        font-weight: 700;
+        box-shadow: 0 7px 18px rgba(37,99,235,0.12);
+    }
+
+    .role-icon {
+        display: block;
+        font-size: 21px;
+        margin-bottom: 5px;
+    }
+
+    /* INPUTS */
+
+    .input-group {
+        margin-bottom: 19px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 13px;
+        font-weight: 700;
+        color: #334155;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    input {
+        width: 100%;
+        padding: 15px 45px 15px 15px;
+        border: 1.5px solid #d5deea;
+        border-radius: 13px;
+        font-size: 15px;
+        color: #0f172a;
+        outline: none;
+        background: #f8fafc;
+        transition: 0.25s;
+    }
+
+    input:focus {
+        background: white;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 4px rgba(37,99,235,0.10);
+    }
+
+    .input-icon {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #64748b;
+        font-size: 18px;
+    }
+
+    .password-toggle {
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-size: 17px;
+        color: #64748b;
+    }
+
+    /* OPTIONS */
+
+    .login-options {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 22px;
+        font-size: 13px;
+    }
+
+    .remember {
+        color: #64748b;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+    }
+
+    .remember input {
+        width: auto;
+        padding: 0;
+    }
+
+    .forgot {
+        color: #2563eb;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    /* BUTTON */
+
+    .login-btn {
+        width: 100%;
+        padding: 16px;
+        border: none;
+        border-radius: 13px;
+        background: linear-gradient(100deg, #2563eb, #1d4ed8);
+        color: white;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        box-shadow: 0 8px 20px rgba(37,99,235,0.22);
+    }
+
+    .login-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 25px rgba(37,99,235,0.32);
+    }
+
+    .login-btn:active {
+        transform: translateY(0);
+    }
+
+    /* EMERGENCY */
+
+    .emergency {
+        margin-top: 18px;
+        padding: 13px 15px;
+        border-radius: 13px;
+        background: #fff7ed;
+        border: 1px solid #fed7aa;
+        color: #c2410c;
+        text-align: center;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .security {
+        text-align: center;
+        margin-top: 20px;
+        color: #94a3b8;
+        font-size: 11px;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 850px) {
+
+        .login-container {
+            flex-direction: column;
+            max-width: 600px;
+        }
+
+        .left-panel,
+        .right-panel {
+            width: 100%;
+        }
+
+        .left-panel {
+            padding: 40px;
+            min-height: 350px;
+        }
+
+        .right-panel {
+            padding: 40px;
+        }
+    }
+
+    @media (max-width: 500px) {
+
+        body {
+            padding: 12px;
+        }
+
+        .left-panel,
+        .right-panel {
+            padding: 30px 24px;
+        }
+
+        .logo {
+            font-size: 36px;
+        }
+
+        .welcome {
+            font-size: 28px;
+        }
+
+        .roles {
+            gap: 6px;
+        }
+
+        .role {
+            font-size: 11px;
+        }
+    }
+</style>
+```
+
+</head>
+
+<body>
+
+<div class="login-container">
+
+```
+<!-- LEFT PANEL -->
+
+<div class="left-panel">
+
+    <div class="brand">
+
+        <div class="logo">
+            Hospi<span>Trax</span>
+        </div>
+
+        <div class="brand-line"></div>
+
+    </div>
+
+    <div class="tagline">
+        Smart Hospital Management &
+        Intelligent Healthcare System
+    </div>
+
+    <div class="features">
+
+        <div class="feature">
+            <div class="feature-icon">🔐</div>
+            <div class="feature-text">
+                Secure Patient Records
+            </div>
+        </div>
+
+        <div class="feature">
+            <div class="feature-icon">🤖</div>
+            <div class="feature-text">
+                AI-Based Clinical Support
+            </div>
+        </div>
+
+        <div class="feature">
+            <div class="feature-icon">🆔</div>
+            <div class="feature-text">
+                Unified Patient Identification
+            </div>
+        </div>
+
+        <div class="feature">
+            <div class="feature-icon">🚑</div>
+            <div class="feature-text">
+                Emergency Medical Access
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- RIGHT PANEL -->
+
+<div class="right-panel">
+
+    <div class="welcome">
+        Welcome Back
+    </div>
+
+    <div class="subtitle">
+        Sign in securely to access HospiTrax.
+    </div>
+
+
+    {% if error %}
+
+    <div class="error">
+        ⚠️ {{ error }}
+    </div>
+
+    {% endif %}
+
+
+    <div class="role-title">
+        Select your role
+    </div>
+
+
+    <div class="roles">
+
+        <div
+            class="role active"
+            onclick="selectRole(this, 'patient')"
+        >
+            <span class="role-icon">👤</span>
+            Patient
+        </div>
+
+        <div
+            class="role"
+            onclick="selectRole(this, 'doctor')"
+        >
+            <span class="role-icon">👨‍⚕️</span>
+            Doctor
+        </div>
+
+        <div
+            class="role"
+            onclick="selectRole(this, 'admin')"
+        >
+            <span class="role-icon">🛡️</span>
+            Admin
+        </div>
+
+    </div>
+
+
+    <form method="POST" action="/login">
+
+        <input
+            type="hidden"
+            name="role"
+            id="selectedRole"
+            value="patient"
+        >
+
+
+        <div class="input-group">
+
+            <label>
+                Username / Email
+            </label>
+
+            <div class="input-wrapper">
+
+                <input
+                    type="text"
+                    name="username"
+                    placeholder="Enter your username"
+                    autocomplete="username"
+                    required
+                >
+
+                <span class="input-icon">
+                    👤
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="input-group">
+
+            <label>
+                Password
+            </label>
+
+            <div class="input-wrapper">
+
+                <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    required
+                >
+
+                <button
+                    type="button"
+                    class="password-toggle"
+                    onclick="togglePassword()"
+                    aria-label="Show password"
+                >
+                    👁
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="login-options">
+
+            <label class="remember">
+                <input type="checkbox">
+                Remember me
+            </label>
+
+            <span class="forgot">
+                Forgot password?
+            </span>
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="login-btn"
+        >
+            Sign In Securely
+        </button>
+
+    </form>
+
+
+    <div class="emergency">
+        🚨 <strong>Emergency Access</strong><br>
+        Biometric patient identification can be integrated
+        for emergency medical record retrieval.
+    </div>
+
+
+    <div class="security">
+        🔒 Protected healthcare environment • HospiTrax
+    </div>
+
+</div>
+```
+
+</div>
+
+<script>
+
+function selectRole(element, role) {
+
+    document.querySelectorAll(".role").forEach(function(item) {
+        item.classList.remove("active");
+    });
+
+    element.classList.add("active");
+
+    document.getElementById("selectedRole").value = role;
+}
+
+
+function togglePassword() {
+
+    const password = document.getElementById("password");
+    const button = document.querySelector(".password-toggle");
+
+    if (password.type === "password") {
+
+        password.type = "text";
+        button.textContent = "🙈";
+
+    } else {
+
+        password.type = "password";
+        button.textContent = "👁";
+
+    }
+}
+
+</script>
+
+</body>
+</html>
